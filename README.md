@@ -16,7 +16,7 @@ I’ll  create a system that is capable of recognizing, through Machine Learning
 
 I especially want a system that can help protect forests and the species that inhabit them.
 
-<img src="https://i.ibb.co/8jhnpgf/fores-1.jpg" height="49%" ><img src="https://i.ibb.co/6DQvy08/fores-2.jpg" height="49%" >
+<img src="https://i.ibb.co/5xvc3Rb/Fores-1.jpg" height="49%" ><img src="https://i.ibb.co/nm2qk9D/Fores-2.jpg" height="49%" >
 
 Most solutions are based on raising awareness, but looking at more dedicated solutions we can find:
 

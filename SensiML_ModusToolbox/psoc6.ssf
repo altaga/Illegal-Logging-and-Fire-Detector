@@ -1,0 +1,90 @@
+{
+    "uuid": "00000000-0000-0000-0000-000000000000",
+    "device_name": "PSoC 6 Wi-Fi BT Pioneer Kit",
+    "device_manufacturer": "Infineon",
+    "plugin_developer": "SensiML",
+    "firmware_download_links": [
+        {
+            "title": "Data Collection Firmware",
+            "description": "SensiML documentation for building data collection and recognition firmware",
+            "link": "https://sensiml.com/documentation/firmware/infineon-psoc6/infineon-psoc6-cy8ckit-062s2-43012.html"
+        }
+    ],
+    "documentation_links": [
+        {
+            "title": "Infineon Product Page",
+            "description": "Product and support documentation for the Infineon PSoC 6 Wi-Fi BT Pioneer Kit",
+            "link": "https://www.infineon.com/cms/en/product/evaluation-boards/cy8ckit-062s2-43012/"
+        }
+    ],
+    "device_connections": [
+        {
+            "display_name": "Serial Port",
+            "value": 1,
+            "is_default": true,
+            "serial_port_configuration": {
+                "baud": 1000000,
+                "stop_bits": 1,
+                "parity": 0,
+                "handshake": 0
+            }
+        },
+        {
+            "display_name": "Wi-Fi",
+            "value": 2,
+            "is_default": false
+        }
+    ],
+    "capture_sources": [
+        {
+            "name": "Motion",
+            "part": "BMX160",
+            "sample_rates": [
+                400,
+                200,
+                100,
+                50,
+                10
+            ],
+            "sensors": [
+                {
+                    "column_count": 3,
+                    "column_suffixes": [
+                        "X",
+                        "Y",
+                        "Z"
+                    ],
+                    "type": "Accelerometer",
+                    "is_default": true,
+                    "parameters": []
+                },
+                {
+                    "column_count": 3,
+                    "column_suffixes": [
+                        "X",
+                        "Y",
+                        "Z"
+                    ],
+                    "type": "Gyroscope",
+                    "is_default": true,
+                    "parameters": []
+                }
+            ]
+        },
+        {
+            "name": "Audio",
+            "part": "Default",
+            "sample_rates": [
+                16000
+            ],
+            "sensors": [
+                {
+                    "column_count": 1,
+                    "type": "Microphone",
+                    "parameters": []
+                }
+            ]
+        }
+    ],
+    "is_little_endian": true
+}

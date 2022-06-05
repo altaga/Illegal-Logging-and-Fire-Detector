@@ -40,7 +40,7 @@ Displaying the information of the events detected in a simple webapp, together w
 
 ## Features:
 
-* Low-power battery consumption (PSoC 62S2 and LoraWAN).
+* Low-power battery consumption (PSoC and LoraWAN).
 * High accuracy (thanks to SensiML).
 * Easy production at large scale, due to its simplicity.
 
@@ -99,81 +99,106 @@ Displaying the information of the events detected in a simple webapp, together w
 
 # Capturing Data:
 
-In this section I will explain how to measure the data from the QuickFeather to the Data capture lab.
+In this section I will explain how to get audio data from the PSoC to the Data capture lab.
 
-## Setting up the Quickfeather:
+## Setting up the PSoC:
 
-First we have to configure the QuickFeather in data capture mode, in the Capture Project folder I leave the complete project with all the changes made to capture data.
+First we have to configure the PSoC in data capture mode, por fortuna el proyecto ejemplo dentro del Modus Toolbox ya viene configurado en modo captura de datos en audio, asi que solo tendras que flashearlo en el device para empezar a capturar datos.
 
-From the official documentation you can see all the steps to setup the development environment.
-https://github.com/QuickLogic-Corp/qorc-sdk
+<img src="https://i.ibb.co/7jtdjcT/image.png">
 
-In case you only need to start capturing the data, I leave the compiled binary so that you can flash your QuickFeather with the program and be able to capture data quickly.
+Una vez flasheado el dispositivo tendremos que abrir un nuevo proyecto en SensiML con la siguiente configuracion para la captura de datos.
+
+<img src="https://i.ibb.co/ssPx0Bt/image.png">
+
+Si todo funciona correctamente podremos empezar a recibir datos y registrarlos dentro de nuestro proyecto.
 
 Video: Click on the image
-[![Capture](./Images/capture1.png)](https://youtu.be/UMFaDWV3vuo)
+[![Capture](https://i.ibb.co/4RrNrgx/logo.png)](https://youtu.be/1NnxkoxOQmY)
 
 ## Capturing Data:
 
-In the case of my project, the easiest thing was to record the sound of several chainsaws in order to properly train the model.
+In the case of my project, the easiest thing was to record the sound of several chainsaws, people and neutral audio data in order to properly train the model.
 
-NOTE: The captured audios will be in the SensiML Project folder.
+NOTE: The captured audios will be in the [SensiML_Data_Capture_Lab](./SensiML_Data_Capture_Lab/).
 
 Video: Click on the image
-[![Capture](./Images/capture2.png)](https://youtu.be/CJEcgRphHlY)
+[![Capture](https://i.ibb.co/4RrNrgx/logo.png)](https://youtu.be/qyJq7049lT8)
 
 ## Labeling Data:
 
 In this case, I did the labeling of the following categories for my model.
 
-<img src="./Images/label1.png">
+<img src="https://i.ibb.co/ZMLTgZs/image.png">
 
-The system is capable of detecting the sound of mechanical saws, humans and neutral silence, in order to avoid false alarms of the system.
+The system is capable of detecting the sound of mechanical saws, humanvoice and neutral silence, in order to avoid false alarms of the system.
 
 # SensiML:
 
 These were the specifications for the data in SensiML.
 
-<img src="./Images/sensi1.png">
+<img src="https://i.ibb.co/YdJmQ91/image.png">
 
 These were the specs of the model's training.
 
-<img src="./Images/sensi2.png">
+<img src="https://i.ibb.co/TkT5sCx/image.png">
 
 Here the results of the precision of the model against the data used.
 
-<img src="./Images/sensi3.png"> 
+<img src="https://i.ibb.co/BHDTwR0/image.png"> 
 
-And finally the specifications of the compiled binary that is in the repository.
+And finally the specifications of the [Knowledge Pack](Knowledge_Pack.zip) that is in the repository.
 
-<img src="./Images/sensi5.png">
+<img src="https://i.ibb.co/09NTs9z/image.png">
 
-# Testing Model:
+# Testing Model on PSoC:
 
-In this case you can see in the video how the model works correctly for the detection of human voice and detection of a Chainsaw. We are doing this test by seeing the QuickFeather serial output.
+In this case you can see in the video how the model works correctly for the detection of human voice and detection of a Chainsaw. We are doing this test by seeing the PSoC serial output.
 
-NOTE: the serial output is at 460800 baudrate, the board B-L072Z-LRWAN1 perfectly reaches these serial frequencies.
+NOTE: the serial output is at 1000000 baudrate.
+
+<img src="https://i.ibb.co/8myQqLQ/image.png">
 
 Video: Click on the image
-[![Capture](./Images/test.png)](https://youtu.be/ydsBVdKkfGk)
+[![Capture](https://i.ibb.co/4RrNrgx/logo.png)](https://youtu.be/zllu2-R3VS4)
 
-# Serial Interface:
+# PSoC - WiFi-LoRa-32, MQ135 and CY8CKIT-028-SENSE:
 
-In order to send the results of the model to the B-L072Z-LRWAN1, we connect the TX pin of the board, which has a serial output at 460800 baudrate to the D2 pin as shown in the diagram.
+## WiFi-LoRa-32:
+Nuestro dispositivo WiFi-LoRa-32, ademas de mandar los datos recibidos del PSoC a la red de Helium, provee de energia a todo nuestro dispositivo ya que tiene un modulo de bateria LiPo y un regulados 3.3v.
 
-| QuickFeather PIN | B-L072Z-LRWAN1 PIN |
-|------------------|--------------------|
-| 3.3 V            | 3.3 V              |
-| GND              | GND                |
-| TX PIN           | D2                 |
+| PSoC PIN   | WiFi-LoRa-32 PIN |
+|------------|------------------|
+| 3.3 V      | 3.3 V            |
+| GND        | GND              |
+| A14 (P9_6) | 21               |
+| A15 (P9_7) | 13               |
 
-<hr />
+## MQ135:
 
-<img src="./Images/hardware.png">
+El sensor MQ135 es un dispositivo analogico, por lo tanto tenemos que conectarlo a un pin especifico de lectura analogica.
 
-Finally solder everything in a breadboard to avoid failures when using cables or jumpers.
+| PSoC PIN   | MQ135 PIN |
+|------------|-----------|
+| 3.3 V      | 3.3 V     |
+| GND        | GND       |
+| A7 (P10_7) | AO        |
 
-<img src="./Images/solder.jpg" ><hr /><img src="./Images/solder2.jpg" ><hr /><img src="./Images/solder3.jpg" >
+## CY8CKIT-028-SENSE:
+
+Este dispositivo ya viene totalmente diseñado para utlizarse con la PSoC, sin embargo el poder desplegar imaganes en la pantalla puede ser complicado. En el programa ejemplo de Modus Toolbox podemos encontrar un ejemplo de el logo de Cypress para la pantalla.
+
+<img src="https://i.ibb.co/GQps0yn/image.png">
+
+Como creemos que diseñar todo esto solo con X y _ puedes ser muy engorroso y cansado, preferimos crear un script de python que nos permita convertir una imagen de 128x40 en un arreglo de datos que puedan desplegarse en pantalla.
+
+
+
+## All Together:
+
+Una vez ya con todos los dispositivos conectados tenemos el siguiente circuito.
+
+<img src="https://i.ibb.co/rF6V8hb/20220604-194509.jpg" >
 
 # LoraWAN Module:
 

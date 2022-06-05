@@ -212,11 +212,13 @@ Una vez ya con todos los dispositivos conectados tenemos el siguiente circuito.
 
 <img src="https://i.ibb.co/rF6V8hb/20220604-194509.jpg" >
 
-# LoraWAN Module:
+# Data Transmission:
 
-In this section we will explain all the details of the data transmission since we send the POsC data  to WiFi-LoRa-32, until it reaches AWS IoT.
+In this section we will explain all the details of the data transmission since we send the POsC data to AWS IoT.
 
-## Hardware:
+## PSoC to Helium Network:
+
+### Hardware:
 
 The hardware used for this module was a WiFi-LoRa-32.
 
@@ -225,7 +227,7 @@ The hardware used for this module was a WiFi-LoRa-32.
 * LiPo Battery. 1x.
   * https://www.amazon.com/1000mAh-battery-Rechargeable-Lithium-Connector/dp/B07BTWK13N
 
-## Sofware:
+### Sofware:
 
 The board software will be in the [ESP32_Helium_OTAA](./ESP32_Helium_OTAA/) folder where the Arduino IDE project will be.
 
@@ -259,6 +261,17 @@ US915 for Mexico.
 
 ### **Serial to LoraWAN Processing**
 
+Cada vez que nuestro device va a mandar datos a la red de Helium este hace una lectura de los pines 21 y 13 para ver el valor que esta leyendo la PSoC, debido a que estos valores se mandan cada 10 segundos a la red y cada uno de los mensajes tiene un costo en data credits, por lo tanto solo estamos mandando un caracter que representa la lectura.
+
+| PSoC Detection | Character |
+|----------------|-----------|
+| Nothing        | '0'       |
+| Humans         | '1'       |
+| Logging        | '2'       |
+| Fire           | '3'       |
+
+<hr>
+
     case DEVICE_STATE_SEND:
     {
       LoRaWAN.displaySending();
@@ -286,129 +299,43 @@ US915 for Mexico.
       break;
     }
 
-## TTN:
+### Helium Network Coverage:
 
-To communicate the device with TTN, we first need to be in range of the TTN gateways.
+Debido a que la red de helium es dia a dia mas grande, podemos tener cierta certeza que nuestros devices tendran coverage en casi cualquier lugar.
 
-Check coverage at: https://www.thethingsnetwork.org/map
+https://explorer.helium.com/
 
-If you are in coverage, first we have to create a TTN application as the official documentation says:
+<img src="https://i.ibb.co/NrGfyT1/image.png">
 
-https://www.thethingsnetwork.org/docs/applications/add/
+Ahora como muestra aqui un ejemplo de como nuestro device esta mandando datos a la red de Helium.
 
-<img src="./Images/appttn.png">
+Video: Click on the image
+<img src="https://i.ibb.co/MsMXg3H/image.png">
 
-Now that we have our app we must register our device to obtain the credentials.
+## Helium Network to AWS IoT:
 
-https://www.thethingsnetwork.org/docs/devices/registration/
+Para comunicar la plataforma de Helium Network con AWs IoT, decidi utiliar la propia integracion que Helium ya tiene desarrollada para evitarme contratiempos tratando de implementar una propia.
 
-<img src="./Images/device.png">
+<img src="https://i.ibb.co/nB4Q6dv/image.png">
 
-## TTN to AWS IoT:
+Esta integracion se basa en crear una credencial de IAM de AWS para que Helium Console pueda realizar las publicaciones correspondientes en AWS IoT.
 
-My first attempt to communicate TTN with AWSIoT was through the official TTN documentation. However, its integration is not updated as of today 05/04/2021.
-
-https://www.thethingsnetwork.org/docs/applications/aws/
-
-In this case I decided to do my own integration through the following AWS services.
-
-<img src="./Images/aws.png">
-
-<hr>
-
-### **TTN MQTT to AWS API Gateway**:
-
-Since I want this to be a reproducible integration to any system, I decided to make an integration based on the NodeJS container, this container is in the AWS Integration\Container folder.
-
-In a simple way, the container receives all the data that the ttn app receives through the MQTT API and sends everything to its own API as request.
-
-    client.on('message', function (topic, message) {
-        console.log(message.toString())
-        unirest('POST', data.myAPIurl)
-            .headers({
-                'Content-Type': 'application/json'
-            })
-            .send(message.toString())
-            .end(function (res) {
-                if (res.error) throw new Error(res.error);
-                console.log(200);
-            });
-    })
-
-To deploy this container on AWS use the ECR service to upload the container to AWS and ECS to deploy it. However, you can deploy it on your computer through Docker without any problem.
-
-NOTE: The code will be fully commented on what it is doing.
-
-<hr>
-
-### **AWS API Gateway to AWSLambda**:
-
-Once the message reached AWS API Gateway, we have to perform some action with it, for this we deploy a Lambda code in the API to redirect the complete message to AWS IoT.
-
-<img src="./Images/apigate.png">
-
-<hr>
-
-### **AWSLambda to AWS IoT**:
-
-The program that is executed when the message arrives from the container is the following. Also the code is in the AWS Integration \ Lambda folder.
-
-    import json
-    import boto3
-
-    client = boto3.client("iot-data")
-
-    def lambda_handler(event, context):
-        response = client.publish(
-                topic="ttn/echo",
-                qos=1,
-                payload=json.dumps(event["body"]))
-        return {
-            'statusCode': 200,
-            'body': json.dumps('TTN Correct!')
-        }
-
-All the messages that we send from our device, by TTN to AWSIoT, will reach the topic ttn/echo.
-
-<hr>
+<img src="https://i.ibb.co/bBPCWFZ/image.png">
 
 ### Backend DEMO:
 
 Here is a demonstration of the entire backend running at the same time.
 
 Video: Click on the image
-[![Capture](./Images/awsint.png)](https://youtu.be/p_ZSyW9KK2k)
-
-# Power Consumption:
-
-For the project it is very important to see the energy consumption of our device, so I decided with the Nordic Power Profiler Kit II, to do an analysis of the mAh consumed by the device.
-
-The complete initialization of the entire device is approximately 40 seconds with an average consumption of 45mA and peaks of 132mA.
-
-<img src="./Images/138.png">
-
-However, what interests us is the long-term power consumption, so analyzing the consumption after the initialization, we find a stable zone of 48.7 mAh.
-
-<img src="./Images/48.png">
-
-So the LoraWAN module only adds 10mAh to the consumption of the device.
-
-Video: Click on the image
-[![PPKII](./Images/none.png)](https://youtu.be/6QJh2mOm6js)
+[![Capture](https://i.ibb.co/4RrNrgx/logo.png)](https://youtu.be/0V7A9kYDo9o)
 
 # WebPage Deploy:
 
 The deployment of the web page was done using ReactJS, OpenLayers (Maps) and AWS-SDK for javascript.
 
-Desktop:
+https://illegal-logging-and-fire-detector.s3.amazonaws.com/index.html
 
-<img src="./Images/desk.png" height="300px">
-
-Mobile:
-
-<img src="./Images/mobile.png" height="300px">
-
-https://illegal-logging-detector.s3.amazonaws.com/index.html
+<img src="https://i.ibb.co/sHN7Szb/image.png">
 
 ## AWS Cognito:
 
@@ -427,30 +354,39 @@ Webapp/src/components/aws-configuration.js
 
 ## AWS IoT WebSocket:
 
-The web page receives the sensor data through AWSIoT as a web socket, so it is important to define within the page, which is the topic that we are going to receive, in this case "ttn / echo" as we could see in the video of [Backend Video](# backend-demo).
+The web page receives the sensor data through AWSIoT as a web socket, so it is important to define within the page, which is the topic that we are going to receive, in this case "/helium/devices" as we could see in the video of [Backend Video](# backend-demo).
 
 In the following file, put the name of the topic to which you will be subscribed.
 
-Webapp/src/App.js
+[WebApp/src/App.js](./WebApp/src/App.js)
 
-    <IotReciever sub_topics={["ttn/echo"]} callback={this.callBackIoT} />
+    <IotReciever sub_topics={["/helium/devices"]} callback={this.callBackIoT} />
 
 ### **Decode IN Data**:
 
-Because the data we receive from TTN is with a base64 encoding, we need to decode it with the following code in the webapp.
+Because the data we receive from Helium Payload is base64 encoding, we need to decode it with the following code in the webapp.
 
-    let payload = atob(temp["payload_raw"]).replace(' ', '').split(",")
+    let temp = {
+      name: JSON.parse(data[1]).name,
+      payload: atob(JSON.parse(data[1]).payload),
+    }
 
 This performs a conversion like the one we see in the image.
 
-<img src="./Images/decode.png">
+<img src="https://i.ibb.co/rwsMbHs/image.png">
 
-The array is made up of 4 pieces of information:
+Dependiendo del resultado del Payload podremos saber que situacion esta detectando el device.
 
-1. Result of the neural network.
-2. Realtive humidity of the environment.
-3. Temperature in degrees Celsius (converted to Fahrenheit on the page)
-4. Atmospheric pressure in mmHg.
+| Detection Kind | Payload   |
+|----------------|-----------|
+| Nothing        | '0'       |
+| Humans         | '1'       |
+| Logging        | '2'       |
+| Fire           | '3'       |
+
+A su vez podremos saber el tipo de situacion debido al simbolo mostrado en el mapa.
+
+<img src="https://i.ibb.co/r6Nd5Dg/New-Project-10.png">
 
 # Final Product:
 

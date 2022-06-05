@@ -192,7 +192,19 @@ Este dispositivo ya viene totalmente diseñado para utlizarse con la PSoC, sin e
 
 Como creemos que diseñar todo esto solo con X y _ puedes ser muy engorroso y cansado, preferimos crear un script de python que nos permita convertir una imagen de 128x40 en un arreglo de datos que puedan desplegarse en pantalla.
 
+[Colab Notebook](./Image2PSoC.ipynb)
 
+Como podemos ver en la imagen solo tenemos que subir nuestra imagen y el programa la convertira en un arreglo que se pueda desplegar.
+
+<img src="https://i.ibb.co/fGrqccb/image.png">
+
+Solo tenemos que copiar y pegar el string que nos da el programa y listo.
+
+<img src="https://i.ibb.co/kxbQfHd/image.png">
+
+Asi es como se vera una vez desplegada en la pantalla.
+
+<img src="https://i.ibb.co/THZ3PNx/20220604-194736.jpg">
 
 ## All Together:
 
@@ -202,7 +214,7 @@ Una vez ya con todos los dispositivos conectados tenemos el siguiente circuito.
 
 # LoraWAN Module:
 
-In this section we will explain all the details of the data transmission since we send the QuickFeather data by serial to the B-L072Z-LRWAN1, until it reaches AWS IoT.
+In this section we will explain all the details of the data transmission since we send the POsC data  to WiFi-LoRa-32, until it reaches AWS IoT.
 
 ## Hardware:
 

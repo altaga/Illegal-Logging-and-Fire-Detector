@@ -176,7 +176,9 @@ Nuestro dispositivo WiFi-LoRa-32, ademas de mandar los datos recibidos del PSoC 
 
 ## MQ135:
 
-El sensor MQ135 es un dispositivo analogico, por lo tanto tenemos que conectarlo a un pin especifico de lectura analogica.
+El sensor MQ135 es un dispositivo analogico que detecta gases extraños en el ambiente, como lo puede ser humo, alchol, etc... (algunas pruebas se haran con alchol y no con humo por el riesgo de hacer fuego en interiores)
+
+Por lo tanto tenemos que conectarlo a un pin especifico de lectura analogica.
 
 | PSoC PIN   | MQ135 PIN |
 |------------|-----------|
@@ -387,6 +389,11 @@ Dependiendo del resultado del Payload podremos saber que situacion esta detectan
 A su vez podremos saber el tipo de situacion debido al simbolo mostrado en el mapa.
 
 <img src="https://i.ibb.co/r6Nd5Dg/New-Project-10.png">
+
+# Mini DEMO:
+
+Video: Click on the image
+[![Capture](https://i.ibb.co/4RrNrgx/logo.png)](https://youtu.be/SdWnbve8zJ8)
 
 # Final Product:
 

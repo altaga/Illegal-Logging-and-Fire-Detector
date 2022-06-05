@@ -218,26 +218,34 @@ In this section we will explain all the details of the data transmission since w
 
 ## Hardware:
 
-The hardware used for this module was a B-L072Z-LRWAN1 and the X-NUCLEO-IKS01A3 sensor combo.
+The hardware used for this module was a WiFi-LoRa-32.
 
-* B-L072Z-LRWAN1.
-  * https://www.st.com/en/evaluation-tools/b-l072z-lrwan1.html
-* X-NUCLEO-IKS01A3.
-  * https://www.st.com/en/ecosystems/x-nucleo-iks01a3.html
+* WiFi LoRa 32 (V2.1). 1x.
+  * https://heltec.org/project/wifi-lora-32/
+* LiPo Battery. 1x.
+  * https://www.amazon.com/1000mAh-battery-Rechargeable-Lithium-Connector/dp/B07BTWK13N
 
 ## Sofware:
 
-The board software will be in the Serial2Lora_STM32L0 folder where the Arduino IDE project will be.
+The board software will be in the [ESP32_Helium_OTAA](./ESP32_Helium_OTAA/) folder where the Arduino IDE project will be.
 
 <hr>
 
-### **Configure the credentials in the TTN creds.h file**
+### **Helium Console new Device**:
 
-(details of these credentials in the [TTN](#ttn) section).
+Tenemos que crear un nuevo device en nuestra consola de Helium, este puede tardar hasta 20 min en empezar a mandar datos a la consola, porfavor no te desesperes.
 
-    static const char *appEui  = "XXXXXXXXXXXXXXXX";
-    static const char *appKey  = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-    static const char *devEui  = "XXXXXXXXXXXXXXXX";
+<img src="https://i.ibb.co/HGkVkts/image.png">
+
+<hr>
+
+### **Configure the credentials in the Helium creds.h file**
+
+Dentro de la carpeta de ESP32_Helium_OTAA tendras que configurar las credenciales que obtuvimos en el paso anterior.
+
+    uint8_t DevEui[] = { 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX };
+    uint8_t AppEui[] = { 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX }; 
+    uint8_t AppKey[] = { 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX };
 
 <hr>
 
@@ -245,31 +253,37 @@ The board software will be in the Serial2Lora_STM32L0 folder where the Arduino I
 
 US915 for Mexico.
 
-    #define REGION_US915
+<img src="https://i.ibb.co/0Dnbw6R/image.png">
 
 <hr>
 
 ### **Serial to LoraWAN Processing**
 
-    if (Serial1.available()) {
-      String temp = Serial1.readString(); // Reading Serial
-
-      // Processing serial read to get classification only
-
-      int checkpoint1 = temp.indexOf(":", 25);
-      int checkpoint2 = temp.indexOf(",", 25);
-      temp = temp.substring(checkpoint1 + 1, checkpoint2);
-
-      // Append classification in lora message
-
-      my_string = temp + "," + String(int(humidity)) + "," + String(int(temperature)) + "," + String(int(pressure));
-      uint8_t payload[my_string.length() + 1];
-      my_string.getBytes(payload, my_string.length() + 1);
-
-      // Send to TTN 
-
-      sendResult(payload, my_string.length() + 1);
-      delay(1000);
+    case DEVICE_STATE_SEND:
+    {
+      LoRaWAN.displaySending();
+      String test;
+      bool human = digitalRead(HUMAN_PIN);
+      bool saw = digitalRead(CHAINSAW_PIN);
+      if(saw && human){
+        test = "3";
+      }
+      else if(human){
+        test = "1";
+      }
+      else if(saw){
+        test = "2";
+      }
+      else{
+        test = "0";
+      }
+      Serial.print("Human: ");
+      Serial.println(human);
+      Serial.print("Saw: ");
+      Serial.println(saw);
+      sendStringData(test);
+      deviceState = DEVICE_STATE_CYCLE;
+      break;
     }
 
 ## TTN:

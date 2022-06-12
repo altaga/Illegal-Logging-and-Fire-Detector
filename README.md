@@ -105,6 +105,8 @@ Displaying the information of the events detected in a simple webapp, together w
 - El sensor MQ135 esta conectado a un pin analogico A7 en la PSoC™ 62S2.
 - La WiFi LoRa 32 esta conectada a los pines P9_6 y P9_7 para recibir la informacion de que sensor a la board.
 
+NOTA: Los detalles de conexion de ambos diagrama estan explicados mas abajo.
+
 # Capturing Data:
 
 In this section I will explain how to get audio data from the PSoC to the Data capture lab.

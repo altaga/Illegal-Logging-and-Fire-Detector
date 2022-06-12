@@ -202,25 +202,25 @@ This device is already fully designed to be used with the PSoC, however being ab
 
 <img src="https://i.ibb.co/GQps0yn/image.png">
 
-Como creemos que diseñar todo esto solo con X y _ puedes ser muy engorroso y cansado, preferimos crear un script de python que nos permita convertir una imagen de 128x40 en un arreglo de datos que puedan desplegarse en pantalla.
+As we believe that designing all this with just X and _ can be very cumbersome and tiring, we prefer to create a python script that allows us to convert a 128x40 image into an array of data that can be displayed on the screen.
 
 [Colab Notebook](./Image2PSoC.ipynb)
 
-Como podemos ver en la imagen solo tenemos que subir nuestra imagen y el programa la convertira en un arreglo que se pueda desplegar.
+As we can see in the image we only have to upload our image and the program will convert it into an array that can be displayed.
 
 <img src="https://i.ibb.co/fGrqccb/image.png">
 
-Solo tenemos que copiar y pegar el string que nos da el programa y listo.
+We just have to copy and paste the string that the program gives us and that's it.
 
 <img src="https://i.ibb.co/kxbQfHd/image.png">
 
-Asi es como se vera una vez desplegada en la pantalla.
+This is what it will look like once displayed on the screen.
 
 <img src="https://i.ibb.co/THZ3PNx/20220604-194736.jpg">
 
 ## All Together:
 
-Una vez ya con todos los dispositivos conectados tenemos el siguiente circuito.
+Once with all the devices connected we have the following circuit.
 
 <img src="https://i.ibb.co/rF6V8hb/20220604-194509.jpg" >
 
@@ -247,7 +247,7 @@ The board software will be in the [ESP32_Helium_OTAA](./ESP32_Helium_OTAA/) fold
 
 ### **Helium Console new Device**:
 
-Tenemos que crear un nuevo device en nuestra consola de Helium, este puede tardar hasta 20 min en empezar a mandar datos a la consola, porfavor no te desesperes.
+We have to create a new device in our Helium console, this can take up to 20 min to start sending data to the console, do wait a little bit.
 
 <img src="https://i.ibb.co/HGkVkts/image.png">
 
@@ -255,7 +255,7 @@ Tenemos que crear un nuevo device en nuestra consola de Helium, este puede tarda
 
 ### **Configure the credentials in the Helium creds.h file**
 
-Dentro de la carpeta de ESP32_Helium_OTAA tendras que configurar las credenciales que obtuvimos en el paso anterior.
+Inside the ESP32_Helium_OTAA folder you will have to configure the credentials that we obtained in the previous step.
 
     uint8_t DevEui[] = { 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX };
     uint8_t AppEui[] = { 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX }; 
@@ -265,7 +265,7 @@ Dentro de la carpeta de ESP32_Helium_OTAA tendras que configurar las credenciale
 
 ### **Set the correct frequency of LoraWAN**
 
-US915 for Mexico.
+US915 for Mexico, same if your are in the US, check your region please.
 
 <img src="https://i.ibb.co/0Dnbw6R/image.png">
 
@@ -273,7 +273,7 @@ US915 for Mexico.
 
 ### **Serial to LoraWAN Processing**
 
-Cada vez que nuestro device va a mandar datos a la red de Helium este hace una lectura de los pines 21 y 13 para ver el valor que esta leyendo la PSoC, debido a que estos valores se mandan cada 10 segundos a la red y cada uno de los mensajes tiene un costo en data credits, por lo tanto solo estamos mandando un caracter que representa la lectura.
+Every time our device is going to send data to the Helium network, it reads pins 21 and 13 to see the value that the PSoC is reading, because these values are sent every 10 seconds to the network and each one of the messages has a cost in data credits, therefore we are only sending a character that represents the reading.Because the helium network is getting bigger day by day, we can be certain that our devices will have coverage almost anywhere.
 
 | PSoC Detection | Character |
 |----------------|-----------|
@@ -313,24 +313,24 @@ Cada vez que nuestro device va a mandar datos a la red de Helium este hace una l
 
 ### Helium Network Coverage:
 
-Debido a que la red de helium es dia a dia mas grande, podemos tener cierta certeza que nuestros devices tendran coverage en casi cualquier lugar.
+Because the helium network is getting bigger day by day, we can be certain that our devices will have coverage almost anywhere.
 
 https://explorer.helium.com/
 
 <img src="https://i.ibb.co/NrGfyT1/image.png">
 
-Ahora como muestra aqui un ejemplo de como nuestro device esta mandando datos a la red de Helium.
+Now as shown here is an example of how our device is sending data to the Helium network.
 
 Video: Click on the image
 <img src="https://i.ibb.co/MsMXg3H/image.png">
 
 ## Helium Network to AWS IoT:
 
-Para comunicar la plataforma de Helium Network con AWs IoT, decidi utiliar la propia integracion que Helium ya tiene desarrollada para evitarme contratiempos tratando de implementar una propia.
+To communicate the Helium Network platform with AWS IoT, I decided to use the integration that Helium already has developed to avoid setbacks trying to implement my own.
 
 <img src="https://i.ibb.co/nB4Q6dv/image.png">
 
-Esta integracion se basa en crear una credencial de IAM de AWS para que Helium Console pueda realizar las publicaciones correspondientes en AWS IoT.
+This integration is based on creating an AWS IAM credential so that the Helium Console can make the corresponding publications in AWS IoT.
 
 <img src="https://i.ibb.co/bBPCWFZ/image.png">
 
@@ -387,7 +387,7 @@ This performs a conversion like the one we see in the image.
 
 <img src="https://i.ibb.co/rwsMbHs/image.png">
 
-Dependiendo del resultado del Payload podremos saber que situacion esta detectando el device.
+Depending on the result of the Payload we will be able to know what situation the device is detecting.
 
 | Detection Kind | Payload   |
 |----------------|-----------|
@@ -396,7 +396,7 @@ Dependiendo del resultado del Payload podremos saber que situacion esta detectan
 | Logging        | '2'       |
 | Fire           | '3'       |
 
-A su vez podremos saber el tipo de situacion debido al simbolo mostrado en el mapa.
+In turn we can know the type of situation due to the symbol shown on the map.
 
 <img src="https://i.ibb.co/r6Nd5Dg/New-Project-10.png">
 

@@ -93,9 +93,17 @@ Displaying the information of the events detected in a simple webapp, together w
 
 <img src="https://i.ibb.co/wMhs3Xh/Schene-drawio.png">
 
+- Nuestro device se conecta a la red de LoraWAN mediante el WiFi LoRa 32.
+- Ya en la red de Helium el dato se procesa en la Helium Console, conectandose a AWS IoT Gateway.
+- En nuestra AWS IoT Integration recibimos en dato mandado por el device a un Topic.
+- La pagina web esta suscrita al topic donde estamos mandando los datos del sensor, ya en la pagina desplegamos el resultado.
+
 ## Hardware Diagram:
 
 <img src="https://i.ibb.co/cDg0DL7/Untitled-Sketch-bb.png">
+
+- El sensor MQ135 esta conectado a un pin analogico A7 en la PSoC™ 62S2.
+- La WiFi LoRa 32 esta conectada a los pines P9_6 y P9_7 para recibir la informacion de que sensor a la board.
 
 # Capturing Data:
 

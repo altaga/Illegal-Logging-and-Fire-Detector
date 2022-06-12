@@ -93,19 +93,19 @@ Displaying the information of the events detected in a simple webapp, together w
 
 <img src="https://i.ibb.co/wMhs3Xh/Schene-drawio.png">
 
-- Nuestro device se conecta a la red de LoraWAN mediante el WiFi LoRa 32.
-- Ya en la red de Helium el dato se procesa en la Helium Console, conectandose a AWS IoT Gateway.
-- En nuestra AWS IoT Integration recibimos en dato mandado por el device a un Topic.
-- La pagina web esta suscrita al topic donde estamos mandando los datos del sensor, ya en la pagina desplegamos el resultado.
+- Our device connects to the LoraWAN network through WiFi LoRa 32.
+- Once in the Helium network, the data is processed in the Helium Console, connecting to the AWS IoT Gateway.
+- In our AWS IoT Integration we receive the data sent by the device to a Topic.
+- The web page is subscribed to the topic where we are sending the sensor data, and on the page we display the result.
 
 ## Hardware Diagram:
 
 <img src="https://i.ibb.co/cDg0DL7/Untitled-Sketch-bb.png">
 
-- El sensor MQ135 esta conectado a un pin analogico A7 en la PSoC™ 62S2.
-- La WiFi LoRa 32 esta conectada a los pines P9_6 y P9_7 para recibir la informacion de que sensor a la board.
+- The MQ135 sensor is connected to analog pin A7 on the PSoC™ 62S2.
+- The WiFi LoRa 32 is connected to pins P9_6 and P9_7 to receive the information from which sensor to the board.
 
-NOTA: Los detalles de conexion de ambos diagrama estan explicados mas abajo.
+NOTE: The connection details of both diagrams are explained below.
 
 # Capturing Data:
 
@@ -113,15 +113,15 @@ In this section I will explain how to get audio data from the PSoC to the Data c
 
 ## Setting up the PSoC:
 
-First we have to configure the PSoC in data capture mode, por fortuna el proyecto ejemplo dentro del Modus Toolbox ya viene configurado en modo captura de datos en audio, asi que solo tendras que flashearlo en el device para empezar a capturar datos.
+First we have to configure the PSoC in data capture mode. Fortunately, the example project within the Modus Toolbox is already configured in audio data capture mode, so you only have to flash it on the device to start capturing data.
 
 <img src="https://i.ibb.co/7jtdjcT/image.png">
 
-Una vez flasheado el dispositivo tendremos que abrir un nuevo proyecto en SensiML con la siguiente configuracion para la captura de datos.
+Once the device is flashed we will have to open a new project in SensiML with the following configuration for data capture.
 
 <img src="https://i.ibb.co/ssPx0Bt/image.png">
 
-Si todo funciona correctamente podremos empezar a recibir datos y registrarlos dentro de nuestro proyecto.
+If everything works correctly we can start receiving data and registering it within our project.
 
 Video: Click on the image
 [![Capture](https://i.ibb.co/4RrNrgx/logo.png)](https://youtu.be/1NnxkoxOQmY)
@@ -175,7 +175,7 @@ Video: Click on the image
 # PSoC - WiFi-LoRa-32, MQ135 and CY8CKIT-028-SENSE:
 
 ## WiFi-LoRa-32:
-Nuestro dispositivo WiFi-LoRa-32, ademas de mandar los datos recibidos del PSoC a la red de Helium, provee de energia a todo nuestro dispositivo ya que tiene un modulo de bateria LiPo y un regulados 3.3v.
+Our WiFi-LoRa-32 device, in addition to sending the data received from the PSoC to the Helium network, provides power to our entire device since it has a LiPo battery module and a regulated 3.3v.
 
 | PSoC PIN   | WiFi-LoRa-32 PIN |
 |------------|------------------|
@@ -186,9 +186,9 @@ Nuestro dispositivo WiFi-LoRa-32, ademas de mandar los datos recibidos del PSoC 
 
 ## MQ135:
 
-El sensor MQ135 es un dispositivo analogico que detecta gases extraños en el ambiente, como lo puede ser humo, alchol, etc... (algunas pruebas se haran con alchol y no con humo por el riesgo de hacer fuego en interiores)
+The MQ135 sensor is an analog device that detects foreign gases in the environment, such as smoke, alcohol, etc... (some tests will be done with alcohol and not with smoke due to the risk of starting a fire indoors)
 
-Por lo tanto tenemos que conectarlo a un pin especifico de lectura analogica.
+Therefore we have to connect it to a specific analog readout pin.
 
 | PSoC PIN   | MQ135 PIN |
 |------------|-----------|
@@ -198,7 +198,7 @@ Por lo tanto tenemos que conectarlo a un pin especifico de lectura analogica.
 
 ## CY8CKIT-028-SENSE:
 
-Este dispositivo ya viene totalmente diseñado para utlizarse con la PSoC, sin embargo el poder desplegar imaganes en la pantalla puede ser complicado. En el programa ejemplo de Modus Toolbox podemos encontrar un ejemplo de el logo de Cypress para la pantalla.
+This device is already fully designed to be used with the PSoC, however being able to display images on the screen can be complicated. In the Modus Toolbox example program we can find an example of the Cypress logo for the screen.
 
 <img src="https://i.ibb.co/GQps0yn/image.png">
 

@@ -399,22 +399,23 @@ Video: Click on the image
 
 Case Closed:
 
-<img src="./Images/dev1.jpg">
+<img src="https://i.ibb.co/gtWC3Jb/20220611-142331.jpg">
 
 Case open:
 
-<img src="./Images/dev2.jpg">
+<img src="https://i.ibb.co/CMJW55T/20220611-142714.jpg">
 
 Platform UI:
 
-<img src="./Images/desk.png" height="300px">
-<img src="./Images/mobile.png" height="300px">
+<img src="https://i.ibb.co/r6Nd5Dg/New-Project-10.png">
 
-https://illegal-logging-detector.s3.amazonaws.com/index.html
+Page URL:
+
+https://illegal-logging-and-fire-detector.s3.amazonaws.com/index.html
 
 # EPIC DEMO:
 
 Video: Click on the image
-[![demo](./Images/logo.png)](https://youtu.be/eDP3U5mweT8)
+[![demo](https://i.ibb.co/4RrNrgx/logo.png)](https://youtu.be/W7tBl_o99-Q)
 
 Sorry, github does not allow embed videos.

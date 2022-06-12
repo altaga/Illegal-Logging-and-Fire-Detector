@@ -34,7 +34,7 @@ The system, will be easily reproducible, energy efficient and powerful thanks to
 
 <img src="https://i.ibb.co/TRcMLMW/ezgif-com-gif-maker-14.gif">
 
-With the PSoC 62S2 Wi-Fi BT Pioneer Kit, i will obtain an audio signal which, through SensiML model, we can pass through a neural network. That will tell us if the noise of a saw cutting the trees or human voice in the forest.
+With the PSoC 62S2 Wi-Fi BT Pioneer Kit, i will obtain an audio signal which, through SensiML model, we can pass through a neural network. That will tell us if the noise of a saw cutting the trees or human voice in the forest, and MQ135 for fire smoke.
 
 Displaying the information of the events detected in a simple webapp, together with a map which will indicate the position of the event.
 
